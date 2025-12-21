@@ -14,7 +14,6 @@ public class Customer {
         this.totalPurchases = totalPurchases;
     }
 
-    // Getters & Setters
     public int getCustomerId() {
         return customerId;
     }
@@ -47,7 +46,6 @@ public class Customer {
         this.totalPurchases = totalPurchases;
     }
 
-    // Additional methods
     public boolean isVIP() {
         return totalPurchases > 10000;
     }

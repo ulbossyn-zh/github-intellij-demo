@@ -14,7 +14,6 @@ public class Sale {
         this.date = date;
     }
 
-    // Getters & Setters
     public int getSaleId() {
         return saleId;
     }
@@ -47,7 +46,6 @@ public class Sale {
         this.date = date;
     }
 
-    // Additional methods
     public void addItem(double price) {
         totalAmount += price;
     }
