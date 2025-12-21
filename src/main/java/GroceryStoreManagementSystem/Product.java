@@ -46,7 +46,6 @@ public class Product {
         this.stockQuantity = stockQuantity;
     }
 
-    // Additional methods
     public boolean isInStock() {
         return stockQuantity > 0;
     }
