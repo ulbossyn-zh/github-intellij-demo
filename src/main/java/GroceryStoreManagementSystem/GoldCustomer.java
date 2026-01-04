@@ -19,7 +19,6 @@ public class GoldCustomer extends Customer {
         }
     }
 
-
     @Override
     public double calculateDiscountRate() {
         return 0.08; // 8% discount
