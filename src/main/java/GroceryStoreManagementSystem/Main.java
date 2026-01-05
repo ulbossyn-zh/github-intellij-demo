@@ -7,7 +7,6 @@ public class Main {
 
     private static final Scanner sc = new Scanner(System.in);
 
-    // Week4: ONE ArrayList of Parent type
     private static final ArrayList<Customer> customers = new ArrayList<>();
     private static final ArrayList<Product> products = new ArrayList<>();
     private static final ArrayList<Sale> sales = new ArrayList<>();
@@ -46,7 +45,6 @@ public class Main {
         }
     }
 
-    // ---------------- MENU ----------------
     private static void printMenu() {
         System.out.println("\n========================================");
         System.out.println("     GROCERY STORE MANAGEMENT SYSTEM");
@@ -62,7 +60,6 @@ public class Main {
         System.out.println("========================================");
     }
 
-    // ---------------- MENU ACTIONS ----------------
     private static void addBaseCustomer() {
         System.out.println("\n--- ADD Customer (Base) ---");
         int id = readInt("Customer ID: ");
@@ -71,7 +68,7 @@ public class Main {
         double purchases = readDouble("Total purchases: ");
 
         customers.add(new Customer(id, name, level, purchases));
-        System.out.println("Added ✅");
+        System.out.println("Added ");
     }
 
     private static void addRegularCustomer() {
@@ -81,9 +78,8 @@ public class Main {
         double purchases = readDouble("Total purchases: ");
         int visits = readInt("Visits count: ");
 
-        // stored as parent type (polymorphism)
         customers.add(new RegularCustomer(id, name, purchases, visits));
-        System.out.println("Added ✅");
+        System.out.println("Added ");
     }
 
     private static void addGoldCustomer() {
@@ -94,7 +90,7 @@ public class Main {
         double cashbackRate = readDouble("Cashback rate (%): ");
 
         customers.add(new GoldCustomer(id, name, purchases, cashbackRate));
-        System.out.println("Added ✅");
+        System.out.println("Added ");
     }
 
     private static void viewAllCustomers() {
@@ -108,18 +104,16 @@ public class Main {
             Customer c = customers.get(i);
             System.out.println((i + 1) + ". " + c);
 
-            // instanceof demo badges
             if (c instanceof RegularCustomer rc) {
-                if (rc.isFrequentBuyer()) System.out.println("   Frequent buyer ✅");
+                if (rc.isFrequentBuyer()) System.out.println("   Frequent buyer ");
             } else if (c instanceof GoldCustomer gc) {
-                if (gc.eligibleForFreeDelivery()) System.out.println("   Free delivery ✅");
+                if (gc.eligibleForFreeDelivery()) System.out.println("   Free delivery ");
             } else {
-                if (c.isVIP()) System.out.println("   VIP ⭐");
+                if (c.isVIP()) System.out.println("   VIP ");
             }
         }
     }
 
-    // Week4: demonstrate polymorphism (same method call, different behavior)
     private static void polymorphismDemo() {
         System.out.println("\n--- POLYMORPHISM DEMO (Discount Calculation) ---");
         if (customers.isEmpty()) {
@@ -130,7 +124,6 @@ public class Main {
         double bill = readDouble("Enter bill amount: ");
 
         for (Customer c : customers) {
-            // SAME call for all customers → different result because of override
             double rate = c.calculateDiscountRate();
             double finalPrice = c.calculateFinalPrice(bill);
 
@@ -140,10 +133,9 @@ public class Main {
                     + " | final=" + finalPrice);
         }
 
-        System.out.println("✨ Same method, different behavior = POLYMORPHISM!");
+        System.out.println(" Same method, different behavior = POLYMORPHISM!");
     }
 
-    // Week4: instanceof + downcasting
     private static void viewRegularOnly() {
         System.out.println("\n--- REGULAR ONLY ---");
         int count = 0;
@@ -161,7 +153,6 @@ public class Main {
         if (count == 0) System.out.println("No RegularCustomer found.");
     }
 
-    // Week4: instanceof + downcasting
     private static void viewGoldOnly() {
         System.out.println("\n--- GOLD ONLY ---");
         int count = 0;
@@ -179,7 +170,6 @@ public class Main {
         if (count == 0) System.out.println("No GoldCustomer found.");
     }
 
-    // ---------------- INPUT HELPERS ----------------
     private static int readInt(String prompt) {
         while (true) {
             System.out.print(prompt);
