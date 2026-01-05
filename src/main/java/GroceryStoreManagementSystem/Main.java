@@ -13,7 +13,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Seed data (optional)
         products.add(new Product(1, "Milk", 500, 10));
         products.add(new Product(2, "Bread", 200, 0));
 
