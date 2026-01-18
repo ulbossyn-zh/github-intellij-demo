@@ -16,10 +16,21 @@ public class Product {
         setStockQuantity(stockQuantity);
     }
 
-    public int getProductId() { return productId; }
-    public String getName() { return name; }
-    public double getPrice() { return price; }
-    public int getStockQuantity() { return stockQuantity; }
+    public int getProductId() {
+        return productId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getStockQuantity() {
+        return stockQuantity;
+    }
 
     public void setProductId(int productId) throws InvalidInputException {
         if (productId <= 0) throw new InvalidInputException("Product ID must be positive: " + productId);
