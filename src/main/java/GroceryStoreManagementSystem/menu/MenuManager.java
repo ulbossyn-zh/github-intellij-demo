@@ -2,6 +2,8 @@ package GroceryStoreManagementSystem.menu;
 
 import GroceryStoreManagementSystem.exception.InvalidInputException;
 import GroceryStoreManagementSystem.model.*;
+import GroceryStoreManagementSystem.repository.IProductRepository;
+import GroceryStoreManagementSystem.repository.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -10,12 +12,17 @@ public class MenuManager implements Menu {
 
     private final Scanner sc = new Scanner(System.in);
 
+    // OLD (memory) lists - customer demo үшін қалдырамыз
     private final ArrayList<Customer> customers = new ArrayList<>();
     private final ArrayList<Product> products = new ArrayList<>();
     private final ArrayList<Sale> sales = new ArrayList<>();
 
+    // ✅ DB repository
+    private final IProductRepository productRepo = new ProductRepository();
+
     public MenuManager() {
         try {
+            // demo data (memory)
             products.add(new Product(1, "Milk", 500, 10));
             products.add(new Product(2, "Bread", 200, 0));
 
@@ -39,6 +46,15 @@ public class MenuManager implements Menu {
         System.out.println("5. Polymorphism Demo (Discount)");
         System.out.println("6. View Regular Only (instanceof + downcasting)");
         System.out.println("7. View Gold Only (instanceof + downcasting)");
+
+        // ✅ Week7 JDBC CRUD
+        System.out.println("----------------------------------------");
+        System.out.println("8. Create Product (DB)");
+        System.out.println("9. View All Products (DB)");
+        System.out.println("10. View Product By ID (DB)");
+        System.out.println("11. Update Product (DB)");
+        System.out.println("12. Delete Product (DB)");
+
         System.out.println("0. Exit");
         System.out.println("========================================");
     }
@@ -60,6 +76,14 @@ public class MenuManager implements Menu {
                     case 5 -> polymorphismDemo();
                     case 6 -> viewRegularOnly();
                     case 7 -> viewGoldOnly();
+
+                    // ✅ DB CRUD
+                    case 8 -> createProductDB();
+                    case 9 -> viewAllProductsDB();
+                    case 10 -> viewProductByIdDB();
+                    case 11 -> updateProductDB();
+                    case 12 -> deleteProductDB();
+
                     case 0 -> {
                         System.out.println("\n=== Program Complete ===");
                         return;
@@ -79,6 +103,8 @@ public class MenuManager implements Menu {
             }
         }
     }
+
+    // ===================== CUSTOMER DEMO (OLD) =====================
 
     private void addBaseCustomer() {
         System.out.println("\n--- ADD Customer (Base) ---");
@@ -190,18 +216,85 @@ public class MenuManager implements Menu {
     private void viewGoldOnly() {
         System.out.println("\n--- GOLD ONLY ---");
         int count = 0;
-
         for (Customer c : customers) {
             if (c instanceof GoldCustomer gc) {
                 count++;
                 System.out.println(count + ". " + gc);
-
-                double exampleBill = 10000;
-                System.out.println("   Example cashback on " + exampleBill + " = " + gc.calculateCashback(exampleBill));
             }
         }
         if (count == 0) System.out.println("No GoldCustomer found.");
     }
+
+    // ===================== PRODUCT CRUD (DB) =====================
+
+    private void createProductDB() {
+        System.out.println("\n--- CREATE PRODUCT (DB) ---");
+        try {
+            String name = readLine("Product name: ");
+            double price = readDouble("Price: ");
+            int stock = readInt("Stock quantity: ");
+
+            // DB id өзі береді (SERIAL), бірақ сенің конструктор id сұрайды — сондықтан 1 қоямыз
+            Product p = new Product(1, name, price, stock);
+
+            boolean ok = productRepo.create(p);
+            System.out.println(ok ? "Created ✅" : "Failed ❌");
+
+        } catch (InvalidInputException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("❌ " + e.getMessage());
+        }
+    }
+
+    private void viewAllProductsDB() {
+        System.out.println("\n--- ALL PRODUCTS (DB) ---");
+        var list = productRepo.getAll();
+        if (list.isEmpty()) {
+            System.out.println("No products found.");
+        } else {
+            list.forEach(System.out::println);
+        }
+    }
+
+    private void viewProductByIdDB() {
+        System.out.println("\n--- PRODUCT BY ID (DB) ---");
+        int id = readInt("Enter product_id: ");
+        Product p = productRepo.getById(id);
+        System.out.println(p == null ? "Not found." : p);
+    }
+
+    private void updateProductDB() {
+        System.out.println("\n--- UPDATE PRODUCT (DB) ---");
+        try {
+            int id = readInt("Enter product_id to update: ");
+            String name = readLine("New name: ");
+            double price = readDouble("New price: ");
+            int stock = readInt("New stock: ");
+
+            Product updated = new Product(1, name, price, stock);
+            boolean ok = productRepo.update(id, updated);
+            System.out.println(ok ? "Updated ✅" : "Failed ❌");
+
+        } catch (InvalidInputException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("❌ " + e.getMessage());
+        }
+    }
+
+    private void deleteProductDB() {
+        System.out.println("\n--- DELETE PRODUCT (DB) ---");
+        int id = readInt("Enter product_id to delete: ");
+        try {
+            boolean ok = productRepo.delete(id);
+            System.out.println(ok ? "Deleted ✅" : "Failed ❌");
+        } catch (IllegalArgumentException e) {
+            System.out.println("❌ " + e.getMessage());
+        }
+    }
+
+    // ===================== INPUT HELPERS =====================
 
     private int readInt(String prompt) {
         System.out.print(prompt);
@@ -215,6 +308,6 @@ public class MenuManager implements Menu {
 
     private String readLine(String prompt) {
         System.out.print(prompt);
-        return sc.nextLine();
+        return sc.nextLine().trim();
     }
 }

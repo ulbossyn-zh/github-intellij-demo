@@ -33,9 +33,8 @@ public class Product {
     }
 
     public void setProductId(int productId) throws InvalidInputException {
-        if (productId <= 0) throw new InvalidInputException("Product ID must be positive: " + productId);
-        this.productId = productId;
-    }
+        if (productId <= 0) throw new InvalidInputException("product ID must be positive: " + productId);
+        this.productId = productId;}
 
     public void setName(String name) throws InvalidInputException {
         if (name == null || name.trim().isEmpty()) throw new InvalidInputException("Product name cannot be empty");
