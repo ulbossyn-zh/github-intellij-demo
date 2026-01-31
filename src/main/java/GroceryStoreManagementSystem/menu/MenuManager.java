@@ -47,13 +47,17 @@ public class MenuManager implements Menu {
         System.out.println("6. View Regular Only (instanceof + downcasting)");
         System.out.println("7. View Gold Only (instanceof + downcasting)");
 
-        // ✅ Week7 JDBC CRUD
         System.out.println("----------------------------------------");
         System.out.println("8. Create Product (DB)");
         System.out.println("9. View All Products (DB)");
         System.out.println("10. View Product By ID (DB)");
         System.out.println("11. Update Product (DB)");
-        System.out.println("12. Delete Product (DB)");
+        System.out.println("12. Delete Product (DB) [Safe]");
+
+        // ✅ Week 8 SEARCH
+        System.out.println("13. Search Product by Name (DB)");
+        System.out.println("14. Search Product by Price Range (DB)");
+        System.out.println("15. Search Product by Min Price (DB)");
 
         System.out.println("0. Exit");
         System.out.println("========================================");
@@ -82,7 +86,12 @@ public class MenuManager implements Menu {
                     case 9 -> viewAllProductsDB();
                     case 10 -> viewProductByIdDB();
                     case 11 -> updateProductDB();
-                    case 12 -> deleteProductDB();
+                    case 12 -> deleteProductDBSafe();
+
+                    // ✅ Week 8 SEARCH
+                    case 13 -> searchProductByNameDB();
+                    case 14 -> searchProductByPriceRangeDB();
+                    case 15 -> searchProductByMinPriceDB();
 
                     case 0 -> {
                         System.out.println("\n=== Program Complete ===");
@@ -234,7 +243,7 @@ public class MenuManager implements Menu {
             double price = readDouble("Price: ");
             int stock = readInt("Stock quantity: ");
 
-            // DB id өзі береді (SERIAL), бірақ сенің конструктор id сұрайды — сондықтан 1 қоямыз
+            // DB id өзі береді (SERIAL), бірақ сенің Product конструктор id сұрайды — 1 деп береміз
             Product p = new Product(1, name, price, stock);
 
             boolean ok = productRepo.create(p);
@@ -250,11 +259,8 @@ public class MenuManager implements Menu {
     private void viewAllProductsDB() {
         System.out.println("\n--- ALL PRODUCTS (DB) ---");
         var list = productRepo.getAll();
-        if (list.isEmpty()) {
-            System.out.println("No products found.");
-        } else {
-            list.forEach(System.out::println);
-        }
+        if (list.isEmpty()) System.out.println("No products found.");
+        else list.forEach(System.out::println);
     }
 
     private void viewProductByIdDB() {
@@ -283,15 +289,58 @@ public class MenuManager implements Menu {
         }
     }
 
-    private void deleteProductDB() {
-        System.out.println("\n--- DELETE PRODUCT (DB) ---");
+    // ✅ Week 8: Safe delete (confirm yes/no)
+    private void deleteProductDBSafe() {
+        System.out.println("\n--- DELETE PRODUCT (DB) [SAFE] ---");
         int id = readInt("Enter product_id to delete: ");
+
+        Product p = productRepo.getById(id);
+        if (p == null) {
+            System.out.println("Not found.");
+            return;
+        }
+
+        System.out.println("Found: " + p);
+        String confirm = readLine("Are you sure? (yes/no): ").toLowerCase();
+
+        if (!confirm.equals("yes")) {
+            System.out.println("Cancelled ✅");
+            return;
+        }
+
         try {
             boolean ok = productRepo.delete(id);
             System.out.println(ok ? "Deleted ✅" : "Failed ❌");
         } catch (IllegalArgumentException e) {
             System.out.println("❌ " + e.getMessage());
         }
+    }
+
+    // ===================== ✅ WEEK 8 SEARCH (DB) =====================
+
+    private void searchProductByNameDB() {
+        System.out.println("\n--- SEARCH PRODUCT BY NAME (DB) ---");
+        String keyword = readLine("Enter keyword: ");
+        var list = productRepo.searchByName(keyword);
+        if (list.isEmpty()) System.out.println("No matches.");
+        else list.forEach(System.out::println);
+    }
+
+    private void searchProductByPriceRangeDB() {
+        System.out.println("\n--- SEARCH PRODUCT BY PRICE RANGE (DB) ---");
+        double min = readDouble("Min price: ");
+        double max = readDouble("Max price: ");
+        var list = productRepo.searchByPriceRange(min, max);
+        if (list.isEmpty()) System.out.println("No matches.");
+        else list.forEach(System.out::println);
+    }
+
+    private void searchProductByMinPriceDB() {
+        System.out.println("\n--- SEARCH PRODUCT BY MIN PRICE (DB) ---");
+        double min = readDouble("Min price: ");
+        var list = productRepo.searchByMinPrice(min);
+        if (list.isEmpty()) System.out.println("No matches.");
+        else list.forEach(System.out::println);
     }
 
     // ===================== INPUT HELPERS =====================
