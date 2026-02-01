@@ -236,7 +236,6 @@ public class MenuManager implements Menu {
             double price = readDouble("Price: ");
             int stock = readInt("Stock quantity: ");
 
-            // DB id өзі береді (SERIAL), бірақ сенің Product конструктор id сұрайды — 1 деп береміз
             Product p = new Product(1, name, price, stock);
 
             boolean ok = productRepo.create(p);
