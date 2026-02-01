@@ -350,4 +350,3 @@ public class MenuManager implements Menu {
         return sc.nextLine().trim();
     }
 }
-
