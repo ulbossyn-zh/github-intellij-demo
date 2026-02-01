@@ -20,7 +20,6 @@ public class MenuManager implements Menu {
 
     public MenuManager() {
         try {
-            // demo data (memory)
             products.add(new Product(1, "Milk", 500, 10));
             products.add(new Product(2, "Bread", 200, 0));
 
