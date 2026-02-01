@@ -12,12 +12,10 @@ public class MenuManager implements Menu {
 
     private final Scanner sc = new Scanner(System.in);
 
-    // OLD (memory) lists - customer demo үшін қалдырамыз
     private final ArrayList<Customer> customers = new ArrayList<>();
     private final ArrayList<Product> products = new ArrayList<>();
     private final ArrayList<Sale> sales = new ArrayList<>();
 
-    // ✅ DB repository
     private final IProductRepository productRepo = new ProductRepository();
 
     public MenuManager() {
@@ -54,7 +52,6 @@ public class MenuManager implements Menu {
         System.out.println("11. Update Product (DB)");
         System.out.println("12. Delete Product (DB) [Safe]");
 
-        // ✅ Week 8 SEARCH
         System.out.println("13. Search Product by Name (DB)");
         System.out.println("14. Search Product by Price Range (DB)");
         System.out.println("15. Search Product by Min Price (DB)");
@@ -81,14 +78,12 @@ public class MenuManager implements Menu {
                     case 6 -> viewRegularOnly();
                     case 7 -> viewGoldOnly();
 
-                    // ✅ DB CRUD
                     case 8 -> createProductDB();
                     case 9 -> viewAllProductsDB();
                     case 10 -> viewProductByIdDB();
                     case 11 -> updateProductDB();
                     case 12 -> deleteProductDBSafe();
 
-                    // ✅ Week 8 SEARCH
                     case 13 -> searchProductByNameDB();
                     case 14 -> searchProductByPriceRangeDB();
                     case 15 -> searchProductByMinPriceDB();
@@ -113,7 +108,7 @@ public class MenuManager implements Menu {
         }
     }
 
-    // ===================== CUSTOMER DEMO (OLD) =====================
+
 
     private void addBaseCustomer() {
         System.out.println("\n--- ADD Customer (Base) ---");
@@ -234,7 +229,6 @@ public class MenuManager implements Menu {
         if (count == 0) System.out.println("No GoldCustomer found.");
     }
 
-    // ===================== PRODUCT CRUD (DB) =====================
 
     private void createProductDB() {
         System.out.println("\n--- CREATE PRODUCT (DB) ---");
@@ -289,7 +283,6 @@ public class MenuManager implements Menu {
         }
     }
 
-    // ✅ Week 8: Safe delete (confirm yes/no)
     private void deleteProductDBSafe() {
         System.out.println("\n--- DELETE PRODUCT (DB) [SAFE] ---");
         int id = readInt("Enter product_id to delete: ");
@@ -316,7 +309,6 @@ public class MenuManager implements Menu {
         }
     }
 
-    // ===================== ✅ WEEK 8 SEARCH (DB) =====================
 
     private void searchProductByNameDB() {
         System.out.println("\n--- SEARCH PRODUCT BY NAME (DB) ---");
@@ -343,7 +335,6 @@ public class MenuManager implements Menu {
         else list.forEach(System.out::println);
     }
 
-    // ===================== INPUT HELPERS =====================
 
     private int readInt(String prompt) {
         System.out.print(prompt);

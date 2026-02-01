@@ -11,7 +11,6 @@ public interface IProductRepository {
     boolean delete(int id);
     boolean existsByName(String name);
 
-    // ✅ Week 8 (SEARCH)
     List<Product> searchByName(String keyword);
     List<Product> searchByPriceRange(double min, double max);
     List<Product> searchByMinPrice(double min);
