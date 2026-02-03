@@ -49,7 +49,6 @@ public class ProductRepository implements IProductRepository {
         return dao.delete(id);
     }
 
-    // ===== WEEK 8 SEARCH =====
     @Override
     public List<Product> searchByName(String keyword) {
         return dao.searchByName(keyword);

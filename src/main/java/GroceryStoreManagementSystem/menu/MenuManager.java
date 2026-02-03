@@ -12,15 +12,12 @@ public class MenuManager implements Menu {
 
     private final Scanner sc = new Scanner(System.in);
 
-    // ===== Customers (OOP part) =====
     private final ArrayList<Customer> customers = new ArrayList<>();
 
-    // ===== Products (DB part via repository) =====
     private final IProductRepository productRepo = new ProductRepository();
 
     public MenuManager() {
         try {
-            // Demo customers (optional)
             customers.add(new BaseCustomer(101, "Ali", "Base", 8000));
             customers.add(new RegularCustomer(102, "Aruzhan", 15000, 12));
             customers.add(new GoldCustomer(103, "Dana", 22000, 3.0));
@@ -104,7 +101,6 @@ public class MenuManager implements Menu {
         }
     }
 
-    // ===================== CUSTOMERS =====================
 
     private void addBaseCustomer() {
         System.out.println("\n--- ADD Customer (Base) ---");
@@ -225,11 +221,6 @@ public class MenuManager implements Menu {
         if (count == 0) System.out.println("No GoldCustomer found.");
     }
 
-    // ===================== PRODUCTS (DB) =====================
-
-    // ✅ Create: ID сұрамаймыз. DB SERIAL өзі қояды.
-    // Бірақ Product validation "id>0" талап етсе, объект жасау үшін id=1 береміз.
-    // INSERT SQL product_id қоспайды, сондықтан DB-да конфликт болмайды.
     private void createProductDB() {
         System.out.println("\n--- CREATE PRODUCT (DB) ---");
         try {
@@ -342,7 +333,6 @@ public class MenuManager implements Menu {
         else list.forEach(System.out::println);
     }
 
-    // ===================== INPUT HELPERS =====================
 
     private int readInt(String prompt) {
         System.out.print(prompt);

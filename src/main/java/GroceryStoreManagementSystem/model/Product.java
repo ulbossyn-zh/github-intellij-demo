@@ -9,7 +9,6 @@ public class Product {
     private double price;
     private int stockQuantity;
 
-    // ===== MAIN CONSTRUCTOR (with ID) =====
     public Product(int productId, String name, double price, int stockQuantity)
             throws InvalidInputException {
 
@@ -28,16 +27,12 @@ public class Product {
         this.stockQuantity = stockQuantity;
     }
 
-    // ===== DB CONSTRUCTOR (NO ID) ✅ =====
-    // DB-де product_id = SERIAL → ID-ны PostgreSQL өзі қояды
     public Product(String name, double price, int stockQuantity)
             throws InvalidInputException {
 
-        // id=1 тек validation-нан өту үшін
         this(1, name, price, stockQuantity);
     }
 
-    // ===== GETTERS =====
     public int getProductId() {
         return productId;
     }
@@ -54,7 +49,6 @@ public class Product {
         return stockQuantity;
     }
 
-    // ===== SETTERS (optional) =====
     public void setName(String name) throws InvalidInputException {
         if (name == null || name.isBlank())
             throw new InvalidInputException("Product name cannot be empty");
