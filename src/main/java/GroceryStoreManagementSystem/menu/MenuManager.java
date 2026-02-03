@@ -12,17 +12,15 @@ public class MenuManager implements Menu {
 
     private final Scanner sc = new Scanner(System.in);
 
+    // ===== Customers (OOP part) =====
     private final ArrayList<Customer> customers = new ArrayList<>();
-    private final ArrayList<Product> products = new ArrayList<>();
-    private final ArrayList<Sale> sales = new ArrayList<>();
 
+    // ===== Products (DB part via repository) =====
     private final IProductRepository productRepo = new ProductRepository();
 
     public MenuManager() {
         try {
-            products.add(new Product(1, "Milk", 500, 10));
-            products.add(new Product(2, "Bread", 200, 0));
-
+            // Demo customers (optional)
             customers.add(new BaseCustomer(101, "Ali", "Base", 8000));
             customers.add(new RegularCustomer(102, "Aruzhan", 15000, 12));
             customers.add(new GoldCustomer(103, "Dana", 22000, 3.0));
@@ -50,7 +48,6 @@ public class MenuManager implements Menu {
         System.out.println("10. View Product By ID (DB)");
         System.out.println("11. Update Product (DB)");
         System.out.println("12. Delete Product (DB) [Safe]");
-
         System.out.println("13. Search Product by Name (DB)");
         System.out.println("14. Search Product by Price Range (DB)");
         System.out.println("15. Search Product by Min Price (DB)");
@@ -107,7 +104,7 @@ public class MenuManager implements Menu {
         }
     }
 
-
+    // ===================== CUSTOMERS =====================
 
     private void addBaseCustomer() {
         System.out.println("\n--- ADD Customer (Base) ---");
@@ -228,7 +225,11 @@ public class MenuManager implements Menu {
         if (count == 0) System.out.println("No GoldCustomer found.");
     }
 
+    // ===================== PRODUCTS (DB) =====================
 
+    // ✅ Create: ID сұрамаймыз. DB SERIAL өзі қояды.
+    // Бірақ Product validation "id>0" талап етсе, объект жасау үшін id=1 береміз.
+    // INSERT SQL product_id қоспайды, сондықтан DB-да конфликт болмайды.
     private void createProductDB() {
         System.out.println("\n--- CREATE PRODUCT (DB) ---");
         try {
@@ -236,7 +237,7 @@ public class MenuManager implements Menu {
             double price = readDouble("Price: ");
             int stock = readInt("Stock quantity: ");
 
-            Product p = new Product(1, name, price, stock);
+            Product p = new Product(1, name, price, stock); // id=1 (тек Java үшін)
 
             boolean ok = productRepo.create(p);
             System.out.println(ok ? "Created ✅" : "Failed ❌");
@@ -266,11 +267,20 @@ public class MenuManager implements Menu {
         System.out.println("\n--- UPDATE PRODUCT (DB) ---");
         try {
             int id = readInt("Enter product_id to update: ");
+
+            Product current = productRepo.getById(id);
+            if (current == null) {
+                System.out.println("Not found.");
+                return;
+            }
+            System.out.println("Current: " + current);
+
             String name = readLine("New name: ");
             double price = readDouble("New price: ");
             int stock = readInt("New stock: ");
 
-            Product updated = new Product(1, name, price, stock);
+            Product updated = new Product(id, name, price, stock);
+
             boolean ok = productRepo.update(id, updated);
             System.out.println(ok ? "Updated ✅" : "Failed ❌");
 
@@ -307,7 +317,6 @@ public class MenuManager implements Menu {
         }
     }
 
-
     private void searchProductByNameDB() {
         System.out.println("\n--- SEARCH PRODUCT BY NAME (DB) ---");
         String keyword = readLine("Enter keyword: ");
@@ -333,6 +342,7 @@ public class MenuManager implements Menu {
         else list.forEach(System.out::println);
     }
 
+    // ===================== INPUT HELPERS =====================
 
     private int readInt(String prompt) {
         System.out.print(prompt);
