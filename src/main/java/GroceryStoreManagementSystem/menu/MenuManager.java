@@ -34,20 +34,20 @@ public class MenuManager implements Menu {
         System.out.println("1. Add Customer (Base)");
         System.out.println("2. Add RegularCustomer");
         System.out.println("3. Add GoldCustomer");
-        System.out.println("4. View All Customers (Polymorphic)");
-        System.out.println("5. Polymorphism Demo (Discount)");
-        System.out.println("6. View Regular Only (instanceof + downcasting)");
-        System.out.println("7. View Gold Only (instanceof + downcasting)");
+        System.out.println("4. View All Customers ");
+        System.out.println("5. Polymorphism Demo ");
+        System.out.println("6. View Regular Only ");
+        System.out.println("7. View Gold Only ");
 
         System.out.println("----------------------------------------");
-        System.out.println("8. Create Product (DB)");
-        System.out.println("9. View All Products (DB)");
-        System.out.println("10. View Product By ID (DB)");
-        System.out.println("11. Update Product (DB)");
-        System.out.println("12. Delete Product (DB) [Safe]");
-        System.out.println("13. Search Product by Name (DB)");
-        System.out.println("14. Search Product by Price Range (DB)");
-        System.out.println("15. Search Product by Min Price (DB)");
+        System.out.println("8. Create Product ");
+        System.out.println("9. View All Products ");
+        System.out.println("10. View Product By ID ");
+        System.out.println("11. Update Product ");
+        System.out.println("12. Delete Product ");
+        System.out.println("13. Search Product by Name ");
+        System.out.println("14. Search Product by Price Range ");
+        System.out.println("15. Search Product by Min Price ");
 
         System.out.println("0. Exit");
         System.out.println("========================================");
@@ -190,7 +190,7 @@ public class MenuManager implements Menu {
                     + " | final=" + finalPrice);
         }
 
-        System.out.println("Same method, different behavior = POLYMORPHISM ✅");
+        System.out.println("Same method, different behavior = POLYMORPHISM ");
     }
 
     private void viewRegularOnly() {
@@ -222,7 +222,7 @@ public class MenuManager implements Menu {
     }
 
     private void createProductDB() {
-        System.out.println("\n--- CREATE PRODUCT (DB) ---");
+        System.out.println("\n--- CREATE PRODUCT  ---");
         try {
             String name = readLine("Product name: ");
             double price = readDouble("Price: ");
@@ -241,21 +241,21 @@ public class MenuManager implements Menu {
     }
 
     private void viewAllProductsDB() {
-        System.out.println("\n--- ALL PRODUCTS (DB) ---");
+        System.out.println("\n--- ALL PRODUCTS  ---");
         var list = productRepo.getAll();
         if (list.isEmpty()) System.out.println("No products found.");
         else list.forEach(System.out::println);
     }
 
     private void viewProductByIdDB() {
-        System.out.println("\n--- PRODUCT BY ID (DB) ---");
+        System.out.println("\n--- PRODUCT BY ID  ---");
         int id = readInt("Enter product_id: ");
         Product p = productRepo.getById(id);
         System.out.println(p == null ? "Not found." : p);
     }
 
     private void updateProductDB() {
-        System.out.println("\n--- UPDATE PRODUCT (DB) ---");
+        System.out.println("\n--- UPDATE PRODUCT  ---");
         try {
             int id = readInt("Enter product_id to update: ");
 
@@ -309,7 +309,7 @@ public class MenuManager implements Menu {
     }
 
     private void searchProductByNameDB() {
-        System.out.println("\n--- SEARCH PRODUCT BY NAME (DB) ---");
+        System.out.println("\n--- SEARCH PRODUCT BY NAME  ---");
         String keyword = readLine("Enter keyword: ");
         var list = productRepo.searchByName(keyword);
         if (list.isEmpty()) System.out.println("No matches.");
@@ -317,7 +317,7 @@ public class MenuManager implements Menu {
     }
 
     private void searchProductByPriceRangeDB() {
-        System.out.println("\n--- SEARCH PRODUCT BY PRICE RANGE (DB) ---");
+        System.out.println("\n--- SEARCH PRODUCT BY PRICE RANGE  ---");
         double min = readDouble("Min price: ");
         double max = readDouble("Max price: ");
         var list = productRepo.searchByPriceRange(min, max);
@@ -326,7 +326,7 @@ public class MenuManager implements Menu {
     }
 
     private void searchProductByMinPriceDB() {
-        System.out.println("\n--- SEARCH PRODUCT BY MIN PRICE (DB) ---");
+        System.out.println("\n--- SEARCH PRODUCT BY MIN PRICE  ---");
         double min = readDouble("Min price: ");
         var list = productRepo.searchByMinPrice(min);
         if (list.isEmpty()) System.out.println("No matches.");
