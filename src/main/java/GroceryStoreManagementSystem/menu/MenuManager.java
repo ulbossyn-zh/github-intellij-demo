@@ -228,7 +228,7 @@ public class MenuManager implements Menu {
             double price = readDouble("Price: ");
             int stock = readInt("Stock quantity: ");
 
-            Product p = new Product(1, name, price, stock); // id=1 (тек Java үшін)
+            Product p = new Product(1, name, price, stock);
 
             boolean ok = productRepo.create(p);
             System.out.println(ok ? "Created ✅" : "Failed ❌");
